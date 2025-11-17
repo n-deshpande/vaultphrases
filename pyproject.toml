@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vaultphrases"
+version = "0.1.0"
+description = "Deterministic passphrase derivation tool for secure vault management"
+readme = "README.md"
+requires-python = ">=3.7"
+license = {text = "MIT"}
+authors = [
+    {name = "vaultphrases contributors"}
+]
+keywords = ["password", "passphrase", "security", "vault", "argon2", "kdf"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Security",
+    "Topic :: Security :: Cryptography",
+]
+
+dependencies = [
+    "argon2-cffi>=21.0.0",
+]
+
+[project.scripts]
+vaultphrases = "vaultphrases.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/yourusername/vaultphrases"
+Issues = "https://github.com/yourusername/vaultphrases/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
