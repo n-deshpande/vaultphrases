@@ -12,17 +12,29 @@ Deterministic passphrase derivation tool for secure vault management.
 pipx install vaultphrases
 ```
 
+## Setup
+
+Before using vaultphrases, download a wordlist:
+
+```bash
+# Download EFF Short Wordlist (recommended)
+curl -O https://www.eff.org/files/2016/09/08/eff_short_wordlist_1.txt
+
+# Or EFF Large Wordlist
+curl -O https://www.eff.org/files/2016/07/18/eff_large_wordlist.txt
+```
+
 ## Quick Start
 
 ```bash
 # Derive HOT and COLD phrases
-vaultphrases derive --reveal
+vaultphrases --reveal --wordlist eff_short_wordlist_1.txt
 
 # Derive custom labeled secret
-vaultphrases derive --label "ssh" --words 8
+vaultphrases --label "ssh" --words 8 --wordlist eff_short_wordlist_1.txt
 
 # Show version
-vaultphrases version
+vaultphrases --version
 ```
 
 ## Security

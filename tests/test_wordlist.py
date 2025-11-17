@@ -76,7 +76,6 @@ def test_load_wordlist_empty():
 
 
 def test_get_default_wordlist_path():
-    """Test getting default wordlist path."""
+    """Test getting default wordlist path (should be None - user must provide)."""
     path = get_default_wordlist_path()
-    assert "eff_short_wordlist_1.txt" in path
-    assert path.endswith("data/eff_short_wordlist_1.txt")
+    assert path is None, "Default wordlist path should be None - users must provide their own wordlist"

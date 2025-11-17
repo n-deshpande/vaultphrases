@@ -128,6 +128,20 @@ def run_derivation(args):
         # Load wordlist if needed
         if args.reveal or args.label:
             wordlist_path = args.wordlist or DEFAULT_WORDLIST_PATH
+            if not wordlist_path:
+                print()
+                print("✗ Error: No wordlist specified")
+                print()
+                print("You must provide a wordlist file using --wordlist PATH")
+                print()
+                print("Recommended wordlists:")
+                print("  • EFF Short Wordlist: https://www.eff.org/files/2016/09/08/eff_short_wordlist_1.txt")
+                print("  • EFF Large Wordlist: https://www.eff.org/files/2016/07/18/eff_large_wordlist.txt")
+                print()
+                print("Example:")
+                print("  vaultphrases --reveal --wordlist ~/eff_short_wordlist_1.txt")
+                print()
+                sys.exit(1)
             words = load_wordlist(wordlist_path)
         
         print_progress("Deriving master key with Argon2id (this may take a few seconds)...", 0.2)

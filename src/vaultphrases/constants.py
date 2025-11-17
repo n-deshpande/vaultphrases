@@ -25,8 +25,6 @@ LABEL_COLD = "COLD_PHRASE_V1"
 DEFAULT_WORD_COUNT = 6
 DEFAULT_DELIMITER = "-"
 
-# Default wordlist path
-import os
-from pathlib import Path
-_MODULE_DIR = Path(__file__).parent
-DEFAULT_WORDLIST_PATH = str(_MODULE_DIR / "data" / "eff_short_wordlist_1.txt")
+# Default wordlist path (user must provide their own)
+# Users should download a wordlist (e.g., EFF Short Wordlist) and specify with --wordlist
+DEFAULT_WORDLIST_PATH = None
