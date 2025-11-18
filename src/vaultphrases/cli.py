@@ -16,7 +16,7 @@ from .constants import (
 )
 from .derive import derive_master_key, hkdf_child
 from .security import secure_clear_bytes
-from .wordlist import load_wordlist, bytes_to_phrase
+from .wordlist import load_wordlist, bytes_to_phrase, fingerprint_wordlist
 
 
 def print_banner():
@@ -69,13 +69,41 @@ def get_root_phrase() -> str:
         print("✗ Error: Root phrase cannot be empty")
         sys.exit(1)
     
-    # Warn about weak phrases
-    word_count = len(root_phrase.strip().split())
+    # Validate root phrase strength
+    stripped = root_phrase.strip()
+    char_count = len(stripped)
+    
+    # Try multiple delimiters to get accurate word count
+    word_counts = [
+        len(stripped.split()),           # spaces
+        len(stripped.split('-')),        # hyphens
+        len(stripped.split('_')),        # underscores
+        len(stripped.split(',')),        # commas
+    ]
+    word_count = max(word_counts)  # Use the highest count found
+    
+    # Check for weak phrases
+    is_weak = False
+    warnings = []
+    
     if word_count < 6:
+        is_weak = True
+        warnings.append(f"Only {word_count} words (recommend 12+ words)")
+    
+    if char_count < 40:
+        is_weak = True
+        warnings.append(f"Only {char_count} characters (recommend 60+ characters)")
+    
+    if is_weak:
         print("│")
-        print(f"│  ⚠  WARNING: Your root phrase has only {word_count} words.")
-        print("│     For strong security, use at least 12 words from a wordlist.")
-        print("│     Weak root phrases can be brute-forced despite Argon2id.")
+        print("│  ⚠  WARNING: Your root phrase appears weak!")
+        for warning in warnings:
+            print(f"│     • {warning}")
+        print("│")
+        print("│  For strong security:")
+        print("│     • Use at least 12 words from a wordlist (e.g., EFF Diceware)")
+        print("│     • Aim for 60+ characters total")
+        print("│     • Weak root phrases can be brute-forced despite Argon2id")
     
     print_section_footer()
     
@@ -107,7 +135,7 @@ def run_derivation(args):
         # Print banner
         print_banner()
         
-        # Show test mode warning prominently
+        # Show test mode warning prominently and require confirmation
         if args.test:
             print("╔═══════════════════════════════════════════════════════════╗")
             print("║                  ⚠  TEST MODE ENABLED  ⚠                  ║")
@@ -117,6 +145,21 @@ def run_derivation(args):
             print("║  Test mode is 30x faster but provides minimal protection ║")
             print("╚═══════════════════════════════════════════════════════════╝")
             print()
+            
+            # Require explicit confirmation for test mode with reveal
+            if args.reveal or args.label:
+                try:
+                    confirmation = input("Type 'test' to confirm you understand this is INSECURE: ")
+                    if confirmation.lower() != "test":
+                        print()
+                        print("✗ Test mode not confirmed. Exiting for your safety.")
+                        print("  Remove --test flag to use secure parameters.")
+                        return 1
+                    print()
+                except (EOFError, KeyboardInterrupt):
+                    print()
+                    print("✗ Test mode not confirmed. Exiting.")
+                    return 1
         
         # Get root phrase securely
         root_phrase = get_root_phrase()
@@ -143,6 +186,12 @@ def run_derivation(args):
                 print()
                 sys.exit(1)
             words = load_wordlist(wordlist_path)
+            
+            # Display wordlist info for verification
+            wordlist_name = os.path.basename(wordlist_path)
+            wordlist_fp = fingerprint_wordlist(words)
+            print(f"│  Loaded wordlist: {wordlist_name} ({len(words)} words)")
+            print(f"│  SHA256: {wordlist_fp}")
         
         print_progress("Deriving master key with Argon2id (this may take a few seconds)...", 0.2)
         master_key = derive_master_key(root_phrase, test_mode=args.test)
@@ -189,6 +238,11 @@ def run_derivation(args):
             print("  • Do not screenshot or log these values")
             print("  • Terminal scrollback may retain these values")
             print()
+            print("⚠  IMPORTANT: Validate your passphrases!")
+            print("  • Run this command 2-3 times to verify you get the same output")
+            print("  • A typo in your root phrase will generate different passphrases")
+            print("  • Once confirmed, set up your vaults with these exact phrases")
+            print()
             print("Next Steps:")
             print("  1. Set up your HOT vault (Bitwarden/1Password) with the HOT phrase")
             print("  2. Set up your COLD vault (KeePassXC) with the COLD phrase + keyfile")
@@ -227,6 +281,10 @@ def run_derivation(args):
             print("Security Reminder:")
             print("  • Copy this passphrase immediately")
             print("  • Close this terminal window after clearing the screen")
+            print()
+            print("⚠  IMPORTANT: Validate this passphrase!")
+            print("  • Run this command again to verify you get the same output")
+            print("  • A typo in your root phrase will generate a different passphrase")
             print()
             
             try:

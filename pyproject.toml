@@ -8,7 +8,7 @@ version = "0.1.0"
 description = "Deterministic passphrase derivation tool for secure vault management"
 readme = "README.md"
 requires-python = ">=3.7"
-license = {text = "MIT"}
+license = "MIT"
 authors = [
     {name = "vaultphrases contributors"}
 ]
@@ -17,7 +17,6 @@ classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
     "Intended Audience :: End Users/Desktop",
-    "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.7",
     "Programming Language :: Python :: 3.8",
@@ -36,8 +35,11 @@ dependencies = [
 vaultphrases = "vaultphrases.cli:main"
 
 [project.urls]
-Homepage = "https://github.com/yourusername/vaultphrases"
-Issues = "https://github.com/yourusername/vaultphrases/issues"
+Homepage = "https://github.com/n-deshpande/vaultphrases"
+Issues = "https://github.com/n-deshpande/vaultphrases"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+vaultphrases = ["py.typed"]

@@ -3,7 +3,6 @@
 import ctypes
 import sys
 from typing import Optional
-from vaultphrases.utils import normalise_phrase
 
 def secure_clear_string(s: str) -> None:
     """
