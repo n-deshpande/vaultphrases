@@ -17,7 +17,7 @@ pip install pipx
 pipx ensurepath
 
 # Clone and install vaultphrases
-git clone https://github.com/yourusername/vaultphrases.git
+git clone https://github.com/n-deshpande/vaultphrases.git
 cd vaultphrases
 pipx install .
 ```
@@ -26,7 +26,7 @@ pipx install .
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/vaultphrases.git
+git clone https://github.com/n-deshpande/vaultphrases.git
 cd vaultphrases
 
 # Install system-wide (may require sudo)
@@ -43,7 +43,7 @@ pip install .
 For contributors or if you want to modify the code:
 
 ```bash
-git clone https://github.com/yourusername/vaultphrases.git
+git clone https://github.com/n-deshpande/vaultphrases.git
 cd vaultphrases
 pip install -e .
 ```

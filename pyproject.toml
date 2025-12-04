@@ -12,23 +12,35 @@ license = "MIT"
 authors = [
     {name = "vaultphrases contributors"}
 ]
-keywords = ["password", "passphrase", "security", "vault", "argon2", "kdf"]
+keywords = ["password", "passphrase", "security", "vault", "argon2", "kdf", "diceware", "deterministic"]
 classifiers = [
-    "Development Status :: 3 - Alpha",
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
     "Intended Audience :: Developers",
     "Intended Audience :: End Users/Desktop",
+    "Intended Audience :: System Administrators",
+    "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.7",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "Topic :: Security",
     "Topic :: Security :: Cryptography",
+    "Topic :: Utilities",
+    "Typing :: Typed",
 ]
 
 dependencies = [
     "argon2-cffi>=21.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
 ]
 
 [project.scripts]
@@ -36,10 +48,33 @@ vaultphrases = "vaultphrases.cli:main"
 
 [project.urls]
 Homepage = "https://github.com/n-deshpande/vaultphrases"
-Issues = "https://github.com/n-deshpande/vaultphrases"
+Repository = "https://github.com/n-deshpande/vaultphrases"
+Documentation = "https://github.com/n-deshpande/vaultphrases#readme"
+Issues = "https://github.com/n-deshpande/vaultphrases/issues"
+Changelog = "https://github.com/n-deshpande/vaultphrases/blob/main/CHANGELOG.md"
 
 [tool.setuptools.packages.find]
 where = ["src"]
 
 [tool.setuptools.package-data]
 vaultphrases = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"
+filterwarnings = [
+    "ignore::DeprecationWarning",
+]
+
+[tool.coverage.run]
+source = ["src/vaultphrases"]
+branch = true
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "if __name__ == .__main__.:",
+    "raise NotImplementedError",
+]

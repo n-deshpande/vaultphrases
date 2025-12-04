@@ -14,7 +14,7 @@ Since this package is not yet published to PyPI, install directly from source:
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/vaultphrases.git
+git clone https://github.com/n-deshpande/vaultphrases.git
 cd vaultphrases
 
 # Option 1: Install with pipx (recommended - isolated environment)
@@ -55,11 +55,13 @@ When you load a wordlist, vaultphrases displays its SHA256 fingerprint. Verify i
 
 **EFF Short Wordlist (eff_short_wordlist_1.txt)**
 - Words: 1,296
-- SHA256: `f5a182...c3e8d4` (truncated)
+- File SHA256: `8f5ca830b8bffb6fe39c9736c024a00a6a6411adb3f83a9be8bfeeb6e067ae69`
+- vaultphrases fingerprint: `8f5ca8...067ae69`
 
 **EFF Large Wordlist (eff_large_wordlist.txt)**
 - Words: 7,776
-- SHA256: `a1b2c3...d4e5f6` (truncated)
+- File SHA256: `addd35536511597a02fa0a9ff1e5284677b8883b83e986e43f15a3db996b903e`
+- vaultphrases fingerprint: `addd35...6b903e`
 
 If the fingerprint doesn't match, your wordlist may be corrupted or modified.
 
@@ -83,7 +85,7 @@ vaultphrases --test --reveal --wordlist eff_short_wordlist_1.txt
 
 ```bash
 # 1. Clone and install
-git clone https://github.com/yourusername/vaultphrases.git
+git clone https://github.com/n-deshpande/vaultphrases.git
 cd vaultphrases
 pipx install .
 

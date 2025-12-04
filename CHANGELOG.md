@@ -8,12 +8,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Frozen test vectors for backward compatibility verification
+- Production mode stability test with full Argon2 parameters
+- DEMO.md with usage examples and walkthrough
+- pytest configuration in pyproject.toml
+- Optional dev dependencies (pytest, pytest-cov)
+- Python 3.12 support in classifiers
+
+### Changed
+- Updated pyproject.toml with improved metadata and URLs
+- Development Status upgraded to Beta (4 - Beta)
+- Test vectors now use actual derived values instead of placeholders
+
+## [0.1.0-rc1] - 2025-12-05
+
+### Added
 - Wordlist fingerprint display for verification
 - Enhanced root phrase strength validation (character count + word count)
 - Test mode confirmation prompt to prevent accidental insecure usage
-- Comprehensive reproducibility test suite (8 new tests)
+- Comprehensive reproducibility test suite (10 tests)
 - CHANGELOG.md for tracking changes
-- PRE_V1_AUDIT.md with detailed code review
 
 ### Changed
 - Improved root phrase validation with multiple criteria
@@ -47,5 +61,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Input validation and normalization
 - Clear threat model documentation
 
-[Unreleased]: https://github.com/yourusername/vaultphrases/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/yourusername/vaultphrases/releases/tag/v0.1.0
+[Unreleased]: https://github.com/n-deshpande/vaultphrases/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/n-deshpande/vaultphrases/releases/tag/v0.1.0

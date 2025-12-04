@@ -13,7 +13,7 @@ Thank you for considering contributing to vaultphrases! This is a security-criti
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/vaultphrases.git
+git clone https://github.com/n-deshpande/vaultphrases.git
 cd vaultphrases
 
 # Create a virtual environment
