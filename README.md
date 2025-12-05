@@ -4,36 +4,31 @@ Deterministic passphrase derivation tool for secure vault management.
 
 ## Overview
 
-`vaultphrases` generates deterministic, human-friendly passphrases from a single root phrase using Argon2id and HMAC-SHA256. Perfect for managing HOT (daily) and COLD (offline) password vaults.
+`vaultphrases` generates deterministic, human-friendly passphrases from a single root phrase using Argon2id and HMAC-SHA256. Perfect for managing a HOT (daily) and COLD (offline) password vaults.
+
+## Requirements
+
+- Python 3.7 or higher
+- [uv](https://docs.astral.sh/uv/) (Python package manager)
+- A root phrase generated independently (12+ Diceware words recommended)
 
 ## Installation
 
-### From Source (Current Method)
-
-Since this package is not yet published to PyPI, install directly from source:
+Install from source using [uv](https://docs.astral.sh/uv/):
 
 ```bash
 # Clone the repository
 git clone https://github.com/n-deshpande/vaultphrases.git
 cd vaultphrases
 
-# Option 1: Install with pipx (recommended - isolated environment)
-pipx install .
+# Install with uv (recommended)
+uv pip install .
 
-# Option 2: Install with pip in your current environment
-pip install .
-
-# Option 3: Install in editable mode for development
-pip install -e .
+# Or install in editable mode for development
+uv pip install -e .
 ```
 
-### From PyPI (Future)
-
-Once published to PyPI, you'll be able to install with:
-
-```bash
-pipx install vaultphrases
-```
+If you don't have uv installed, see the [uv installation guide](https://docs.astral.sh/uv/getting-started/installation/).
 
 ## Setup
 
@@ -87,7 +82,7 @@ vaultphrases --test --reveal --wordlist eff_short_wordlist_1.txt
 # 1. Clone and install
 git clone https://github.com/n-deshpande/vaultphrases.git
 cd vaultphrases
-pipx install .
+uv pip install .
 
 # 2. Download wordlist
 mkdir -p ~/.config/vaultphrases

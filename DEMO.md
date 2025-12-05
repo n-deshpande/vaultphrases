@@ -22,8 +22,8 @@ vaultphrases --reveal --wordlist ~/.config/vaultphrases/eff_short_wordlist_1.txt
 ```
 
 You'll be prompted to enter your root phrase. The tool will derive and display:
-- **HOT phrase**: For your daily password manager (Bitwarden, 1Password)
-- **COLD phrase**: For your offline vault (KeePassXC)
+- **HOT phrase**: For your daily password manager (We like ProtonPass)
+- **COLD phrase**: For your offline vault (e.g. KeePassXC)
 
 ### Generate Custom Labeled Passphrase
 
