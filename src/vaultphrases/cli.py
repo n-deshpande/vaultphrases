@@ -13,6 +13,11 @@ from .constants import (
     DEFAULT_WORD_COUNT,
     DEFAULT_DELIMITER,
     DEFAULT_WORDLIST_PATH,
+    ARGON2_MEMORY_COST,
+    ARGON2_TIME_COST,
+    ARGON2_PARALLELISM,
+    ARGON2_HASH_LENGTH,
+    ROOT_SALT_V1,
 )
 from .derive import derive_master_key, hkdf_child
 from .security import secure_clear_bytes
@@ -141,6 +146,9 @@ def run_derivation(args):
             print(f"\n{DIM}{'─' * 40}{RESET}")
             print(f"{DIM}• Verify by running again with same root phrase{RESET}")
             print(f"{DIM}• Close terminal after copying{RESET}")
+
+            # Display recovery kit, doesn't do anything if not requested
+            display_recovery_kit(args, wordlist_name, wordlist_fp, len(words))
             
             try:
                 input(f"\n{DIM}Press ENTER to clear screen...{RESET}")
@@ -161,6 +169,9 @@ def run_derivation(args):
             
             print(f"\n{DIM}• Verify by running again with same root phrase{RESET}")
             
+            # Display recovery kit, doesn't do anything if not requested
+            display_recovery_kit(args, wordlist_name, wordlist_fp, len(words))
+            
             try:
                 input(f"\n{DIM}Press ENTER to clear screen...{RESET}")
                 clear_screen()
@@ -174,6 +185,7 @@ def run_derivation(args):
             print(f"\n{DIM}Use --reveal for HOT/COLD phrases, or --label NAME for custom{RESET}")
         
         secure_clear_bytes(master_key)
+        
         return 0
         
     except KeyboardInterrupt:
@@ -182,6 +194,93 @@ def run_derivation(args):
     except Exception as e:
         print(f"\n{RED}✗ Error: {e}{RESET}")
         return 1
+
+
+def display_recovery_kit(args, wordlist_name=None, wordlist_fp=None, word_count=None):
+    """
+    Display recovery kit information.
+
+    Args:
+        args: Parsed command-line arguments
+        wordlist_name: Name of the wordlist file (if already loaded)
+        wordlist_fp: Fingerprint of the wordlist (if already loaded)
+        word_count: Number of words in the wordlist (if already loaded)
+    """
+    from . import __version__
+    if not args.recoverykit:
+        return
+
+    print()
+    print("╔═══════════════════════════════════════════════════════════╗")
+    print("║                     RECOVERY KIT                          ║")
+    print("╚═══════════════════════════════════════════════════════════╝")
+    print()
+    print("Put these details in your recovery kit:")
+    print()
+
+    # Version information
+    print(f"  • VaultPhrases Version:  {__version__}")
+    print(f"  • Derivation Scheme:     {SCHEME_VERSION}")
+    print()
+
+    # Argon2 parameters and salt
+    print("  Argon2id Parameters:")
+    print(f"    - Memory Cost:         {ARGON2_MEMORY_COST // 1024} MiB")
+    print(f"    - Time Cost:           {ARGON2_TIME_COST} iterations")
+    print(f"    - Parallelism:         {ARGON2_PARALLELISM}")
+    print(f"    - Hash Length:         {ARGON2_HASH_LENGTH} bytes")
+    print(f"    - Root Salt:           {ROOT_SALT_V1.decode('utf-8')}")
+    print()
+
+    # Child derivation labels
+    print("  Child Derivation Labels:")
+    print(f"    - HOT Label:           {LABEL_HOT}")
+    print(f"    - COLD Label:          {LABEL_COLD}")
+    print()
+
+    # Passphrase configuration
+    print("  Passphrase Configuration:")
+    print(f"    - Words per Phrase:    {args.words}")
+    print(f"    - Delimiter:           '{DEFAULT_DELIMITER}'")
+    print()
+
+    # Wordlist information (use provided values or load if needed)
+    if wordlist_name and wordlist_fp and word_count is not None:
+        print("  Wordlist Information:")
+        print(f"    - Wordlist File:       {wordlist_name}")
+        print(f"    - Word Count:          {word_count}")
+        print(f"    - SHA256 Hash:         {wordlist_fp}")
+        print()
+    elif args.wordlist:
+        try:
+            wordlist_path = args.wordlist or DEFAULT_WORDLIST_PATH
+            if wordlist_path:
+                words = load_wordlist(wordlist_path)
+                wl_name = os.path.basename(wordlist_path)
+                wl_fp = fingerprint_wordlist(words)
+
+                print("  Wordlist Information:")
+                print(f"    - Wordlist File:       {wl_name}")
+                print(f"    - Word Count:          {len(words)}")
+                print(f"    - SHA256 Hash:         {wl_fp}")
+                print()
+        except Exception as e:
+            print("  Wordlist Information:")
+            print(f"    - Error loading wordlist: {e}")
+            print()
+    else:
+        print("  Wordlist Information:")
+        print("    - No wordlist specified (use --wordlist to include)")
+        print()
+
+    print("═" * 63)
+    print()
+    print("Recovery Instructions:")
+    print("  • Store this information securely offline")
+    print("  • You need your root phrase + this info to recover passphrases")
+    print("  • Keep wordlist file backed up (especially custom wordlists)")
+    print("  • Verify the wordlist SHA256 hash before recovery")
+    print()
 
 
 def parse_args():
@@ -212,13 +311,13 @@ examples:
 def main():
     """Main CLI entrypoint."""
     args = parse_args()
-    
+
     if args.version:
         print(f"\n{BOLD}vaultphrases{RESET} v0.1.0")
         print(f"{DIM}Scheme: {SCHEME_VERSION} | KDF: Argon2id (256 MiB, 3 iter) | HMAC-SHA256{RESET}")
         print(f"{DIM}https://github.com/n-deshpande/vaultphrases | MIT{RESET}\n")
         return 0
-    
+
     if args.verify:
         print(f"\n{BOLD}vaultphrases{RESET} {DIM}verify{RESET}")
         print(f"{DIM}Not yet implemented — will verify derivation without full reveal{RESET}\n")
