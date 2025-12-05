@@ -64,3 +64,6 @@ recovery_*.txt
 test_output.txt
 demo_output.txt
 derivation_*.txt
+
+# Text files in data/
+src/data/*.txt

@@ -304,6 +304,7 @@ examples:
     parser.add_argument("--test", action="store_true", help="fast Argon2 params (INSECURE, testing only)")
     parser.add_argument("--version", action="store_true", help="show version info")
     parser.add_argument("--verify", action="store_true", help="verify derivation (not yet implemented)")
+    parser.add_argument("--recoverykit", action="store_true", help="show recovery kit")
     
     return parser.parse_args()
 
